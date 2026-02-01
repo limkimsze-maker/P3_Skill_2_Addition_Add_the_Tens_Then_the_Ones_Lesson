@@ -494,6 +494,40 @@
     #panel.smallMode .bondBox{ height:150px; }
 
     #xapiBase{ display:none!important; }
+
+    /* =========================
+       ✅ Back to Main Menu button (bottom center)
+       ========================= */
+    .mainMenuWrap{
+      position:fixed;
+      left:50%;
+      bottom:12px;
+      transform:translateX(-50%);
+      z-index:100000;
+      pointer-events:auto;
+    }
+    .mainMenuBtn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 12px 16px;
+      border-radius:999px;
+      border:1px solid rgba(15,23,42,.14);
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 16px 40px rgba(2,6,23,.16);
+      color: var(--ink);
+      font-weight: 950;
+      text-decoration:none;
+      user-select:none;
+      touch-action:manipulation;
+      backdrop-filter: blur(10px);
+    }
+    .mainMenuBtn:active{ transform: translateY(1px); }
+    @media (max-width: 480px){
+      .mainMenuBtn{ padding: 11px 14px; font-size: 14px; }
+      .mainMenuWrap{ bottom:10px; }
+    }
   </style>
 </head>
 
@@ -735,6 +769,13 @@
     </div>
   </div>
 
+  <!-- ✅ Back to Main Menu (bottom center) -->
+  <div class="mainMenuWrap" aria-hidden="false">
+    <a class="mainMenuBtn" href="https://limkimsze-maker.github.io/P3_Mental_Sum_Challenge/" aria-label="Back to Main Menu">
+      ⬅ Back to Main Menu
+    </a>
+  </div>
+
   <!-- Sound kit (generic) -->
   <script>
     let audioCtx = null;
@@ -799,13 +840,13 @@
       { id:"s3_oSum",  val:()=>state.oSum, msg:()=>`Step 3: ones sum.` },
       { id:"s3_final", val:()=>state.final,msg:()=>`Add all: ${state.tSum} + ${state.oSum} = ${state.final}.` },
 
-        { id:"eq_tensSum", val:()=>state.tSum, msg:()=>`Equation: tens sum.` },
-  { id:"eq_onesSum", val:()=>state.oSum, msg:()=>`Equation: ones sum.` },
-  { id:"eq_final",   val:()=>state.final,msg:()=>`Equation: final answer.` },
+      { id:"eq_tensSum", val:()=>state.tSum, msg:()=>`Equation: tens sum.` },
+      { id:"eq_onesSum", val:()=>state.oSum, msg:()=>`Equation: ones sum.` },
+      { id:"eq_final",   val:()=>state.final,msg:()=>`Equation: final answer.` },
 
-  // ✅ Reveal the BIG final answer box too (when pressing Next)
-  { id:"finalBig",   val:()=>state.final,msg:()=>`Final answer: ${state.final}.` },
-];
+      // ✅ Reveal the BIG final answer box too (when pressing Next)
+      { id:"finalBig",   val:()=>state.final,msg:()=>`Final answer: ${state.final}.` },
+    ];
 
     let nextIndex = 0;
 
@@ -815,7 +856,7 @@
         document.addEventListener("wheel", (e)=>{ e.preventDefault(); }, {passive:false});
         document.addEventListener("touchmove", (e)=>{
           const t = e.target;
-          if(t && (t.tagName==="INPUT" || t.tagName==="BUTTON")) return;
+          if(t && (t.tagName==="INPUT" || t.tagName==="BUTTON" || t.tagName==="A")) return;
           e.preventDefault();
         }, {passive:false});
       }catch(e){}
@@ -957,7 +998,6 @@
       el.classList.remove("badField");
       el.classList.add("okField");
 
-      // ✅ No auto-fill into finalBig (pupil types independently)
       $("fb").innerHTML = `<strong>Next:</strong> ${step.msg()}`;
       setStatus(false, `Showing ${nextIndex+1}/${revealPlan.length}`);
       nextIndex++;
@@ -1124,7 +1164,5 @@
       setProblem(58,56);
     });
   </script>
-  <script src="https://limkimsze-maker.github.io/assets/nav.js"></script>
 </body>
 </html>
-
